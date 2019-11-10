@@ -39,9 +39,7 @@ impl Player {
     }
 
     pub fn increase_score(&mut self) -> GameResult<&Self> {
-        /*
-        * TODO: Make score go up
-        */
+        self.score += 1;
         Ok(self)
     }
 

@@ -27,18 +27,16 @@ impl EventHandler for State {
         self.player1.update(self.crab.location)?;
         self.player2.update(self.crab.location)?;
         self.collision_check();
-        /*
-        * TODO: Play the background music
-        */
+        if !self.assets.bg_sound.playing() {
+            let _ = self.assets.bg_sound.play();
+        }
         Ok(())
     }
     fn draw(&mut self, ctx: &mut Context) -> GameResult {
         graphics::clear(ctx, graphics::WHITE);
         let origin = graphics::DrawParam::new().dest(Point2::new(0.0, 0.0));
         graphics::draw(ctx, &self.assets.bg_image, origin)?;
-        /*
-        * TODO: Draw the background
-        */
+
         for s in self.snacks.iter() {
             s.draw(ctx, &self.assets.snack_image)?;
         }

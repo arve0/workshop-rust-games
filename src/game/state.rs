@@ -55,22 +55,26 @@ impl State {
         let score_2 = graphics::Text::new((format!("Player 2: #{}",
                                                    self.player2.score),
                                            self.assets.font, 38.0));
-        /*
-        * TODO:
-        * Display the scores on the screen!
-        */
+        graphics::draw(ctx, &score_1, graphics::DrawParam::default())?;
+
+        let player2_position = graphics::DrawParam::new()
+            .dest(Point2::new(self.screen_width - 180.0, 0.0));
+        graphics::draw(ctx, &score_2, player2_position)?;
         Ok(self)
     }
 
     pub fn collision_check(&mut self) {
         let c1 = self.player1.claw.get_origin();
         let c2 = self.player2.claw.get_origin();
-        /*
-        * TODO:
-        * Loop over the snacks and check whether they've collided with either claw!
-        * If it collides with either:
-        * 1. Play the sound
-        * 2. Increase player's score
-        */
+
+        for snack in self.snacks.iter_mut() {
+            if snack.collides_with(c1) {
+                self.player1.increase_score().unwrap();
+                self.assets.snap_sound.play().unwrap();
+            } else if snack.collides_with(c2) {
+                self.player2.increase_score().unwrap();
+                self.assets.snap_sound.play().unwrap();
+            }
+        }
     }
 }
