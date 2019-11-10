@@ -30,13 +30,15 @@ impl Crab {
         /*
         * TODO: Move crab left to right
         */
+
         Ok(self)
     }
 
     pub fn draw(&self, ctx: &mut Context, img: &graphics::Image) -> GameResult<&Self> {
-        /*
-        * TODO: Draw crab image
-        */
+        let location = graphics::DrawParam::new()
+            .dest(self.location)
+            .scale(Vector2::new(0.2, 0.2));
+        graphics::draw(ctx, img, location)?;
         Ok(self)
     }
 }
