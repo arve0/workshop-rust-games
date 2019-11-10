@@ -39,32 +39,42 @@ impl Claw {
     }
 
     pub fn update(&mut self, parent_loc: Point2) -> GameResult<&Self> {
-        /*
-        * TODO: Update claw location according to body's location
-        */
+        self.location = parent_loc;
         Ok(self)
     }
 
     pub fn draw(&self, ctx: &mut Context, img: &graphics::Image) -> GameResult<&Self> {
-        /*
-        * TODO: 
-        * 1. Draw a pure red line from the body to the claw
-        * 2. Draw the claw image
-        */
+        let position = graphics::DrawParam::new()
+            .dest(self.get_origin())
+            .scale(Vector2::new(0.2, 0.2));
+        graphics::draw(ctx, img, position)?;
+
+        let body_location = self.location + self.body_anchor;
+        let self_location = self.location + self.joint_anchor;
+        let arm = graphics::Mesh::new_line(
+            ctx,
+            &[body_location, self_location],
+            10.0,
+            graphics::Color::new(1.0, 0.0, 0.0, 1.0)
+        )?;
+        graphics::draw(ctx, &arm, graphics::DrawParam::default())?;
+
         Ok(self)
     }
 
     pub fn get_origin(&self) -> Point2 {
-        /*
-        * TODO: return calculated origin point
-        */
-        Point2::new(0., 0.)
+        self.location
+            + self.joint_anchor
+            - Vector2::new(self.w / 2.0, self.h)
     }
 
-    pub fn movedir(&mut self, dir:Directions) -> Vector2 {
-        /*
-        * TODO: Change joint anchor according to direction
-        */
-        Vector2::new(0., 0.)
+    pub fn movedir(&mut self, dir:Directions) {
+        use Directions::*;
+        self.joint_anchor += match dir {
+            Right => Vector2::new(self.s, 0.),
+            Left => Vector2::new(-self.s, 0.),
+            Down => Vector2::new(0., self.s),
+            Up => Vector2::new(0., -self.s),
+        };
     }
 }

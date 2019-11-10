@@ -12,7 +12,6 @@ pub struct Crab {
     pub location: Point2,
     velocity: Vector2,
     w: f32,
-    s: f32
 }
 
 impl Crab {
@@ -21,17 +20,23 @@ impl Crab {
             location,
             velocity: Vector2::new(CRAB_S, 0.0),
             w: CRAB_W,
-            s: CRAB_S
         };
         Ok(c)
     }
 
     pub fn update(&mut self, max_screen: f32) -> GameResult<&Self> {
-        /*
-        * TODO: Move crab left to right
-        */
+        self.location += self.velocity;
+
+        if self.is_outside_screen(max_screen) {
+            self.velocity = -self.velocity;
+        }
 
         Ok(self)
+    }
+
+    fn is_outside_screen(&self, max_screen: f32) -> bool {
+        (self.location.coords.x + 1.5 * self.w) > max_screen ||
+            self.location.coords.x < 0.0
     }
 
     pub fn draw(&self, ctx: &mut Context, img: &graphics::Image) -> GameResult<&Self> {

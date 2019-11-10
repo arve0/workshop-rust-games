@@ -57,8 +57,16 @@ impl EventHandler for State {
         keycode: KeyCode,
         _keymod: KeyMods
     ) {
-        /*
-        * TODO: Provide 2 key matches. One for player 1 and the other for player 2
-        */
+        match keycode {
+            KeyCode::W => self.player1.movedir(Directions::Up),
+            KeyCode::A => self.player1.movedir(Directions::Left),
+            KeyCode::S => self.player1.movedir(Directions::Down),
+            KeyCode::D => self.player1.movedir(Directions::Right),
+            KeyCode::I => self.player2.movedir(Directions::Up),
+            KeyCode::J => self.player2.movedir(Directions::Left),
+            KeyCode::K => self.player2.movedir(Directions::Down),
+            KeyCode::L => self.player2.movedir(Directions::Right),
+            _ => {},
+        }
     }
 }
